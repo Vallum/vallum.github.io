@@ -1,10 +1,10 @@
 Maybe I could be wrong, but I have this idea.
 
-In CVPR 2017, they chose the next paper as a best paper.
+In CVPR 2017, they chose the next as a best paper.
 
 Densely Connected Convolutional Networks by Gao Huang, Zhuang Liu, Laurens van der Maaten, & Kilian Q. Weinberger
 [https://arxiv.org/abs/1608.06993](https://arxiv.org/abs/1608.06993)
-(Zukerbuck even proudly posted that this is from Facebook AI in his own timeline.)
+(Zukerbuck even proudly posted in his own timeline that this research is from Facebook AI .)
 
 But, even before I read all pages, the idea was familiar to me from the very first page.
 
