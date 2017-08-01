@@ -57,6 +57,6 @@ https://en.wikipedia.org/wiki/Synaptic_pruning
 
 It is believed that the purpose of synaptic pruning is to remove unnecessary neuronal structures from the brain; as the human brain develops, the need to understand more complex structures becomes much more pertinent, and simpler associations formed at childhood are thought to be replaced by complex structures.)
 
-I speculate that the path of deep learning discovery follows from reducing inefficient fully connected layer to adding findings of meaningful dimmensions.
+I speculate that deep learning discovery follows the path from reducing inefficient fully connected layer to adding meaningful dimmensions in structure.
 
-I will discuss more of such issues in this blog from now on.
+I will discuss more of such issues in this blog.
