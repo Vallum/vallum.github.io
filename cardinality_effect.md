@@ -37,7 +37,7 @@ Of course, they are differenct in the point that the later doesn't have a parall
 and a skip connection of A-D,
 but the deficiency can be compensated by increasing the depth without difficulty.
 
-Instead of B+C, if we provide E as a size of sum of B+C channels, 
+If we provide E instead of B+C, as a size of sum of B+C channels, 
 is A-(B|C)-D different from A-E-D?
 So to speak, why is B+C better than E?
 
