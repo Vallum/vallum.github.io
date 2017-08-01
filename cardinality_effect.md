@@ -6,9 +6,9 @@ Densely Connected Convolutional Networks by Gao Huang, Zhuang Liu, Laurens van d
 [https://arxiv.org/abs/1608.06993](https://arxiv.org/abs/1608.06993)
 (Zukerbuck even proudly posted that this is from Facebook AI in his own timeline.)
 
-But, even before I read this paper, it is so accustomed to me from the very first page.
+But, even before I read all pages, the idea was familiar to me from the very first page.
 
-Actually, the below research commonly point the same thing.
+Actually, the below research commonly point out the same thing.
 
 Semi-Supervised Learning with Ladder Networks
 Antti Rasmus, Harri Valpola, Mikko Honkala, Mathias Berglund, Tapani Raiko
@@ -27,17 +27,17 @@ Saining Xie, Ross Girshick, Piotr Dollár, Zhuowen Tu, Kaiming He
 https://arxiv.org/abs/1611.05431
 (Res-Next)
 
-Shortcut connection somethings are used for promoting cardinality effect
-like Google Inception + Inception-Resnet-V2
+Shortcut connection somethings were used for promoting cardinality effect
+at the case e.g. Google Inception + Inception-Resnet-V2
 
 In short, 4-depth network e.g. A-B-C-D can be added shortcuts like A-C, A-D, B-D.
 It is similar to the network which has a double-cardinality such as A-(B|C)-D.
 
-Of counce, they are differenct in the point that the later doesn't have a parallel connection of B-C,
+Of counrse, they are differenct in the point that the later doesn't have a parallel connection of B-C,
 and a skip connection of A-D,
-but we can compensate that by increasing depth without difficulty.
+but the deficiency can be compensated by increasing the depth without difficulty.
 
-If from the beginning we provide E as a size of sum of B+C channels, 
+Instead of B+C, if we provide E as a size of sum of B+C channels, 
 is A-(B|C)-D different from A-E-D?
 So to speak, why is B+C better than E?
 
@@ -48,8 +48,11 @@ The numbers of transformation, they call it cardinality.
 If we assume B, C, E each as a transformation,
 B+C has less connections but has more transformation cases.
 
-The optimization which increases cardinality but reduces cardinality has been already discovered in Neuroscience 
+In my humble knowledge,
+the optimization which increases cardinality but reduces cardinality has been already discovered in Neuroscience 
+
 https://en.wikipedia.org/wiki/Synaptic_pruning
+
 (Synaptic pruning, which includes both axon and dendrite pruning, is the process of synapse elimination that occurs between early childhood and the onset of puberty in many mammals, including humans.
 
 It is believed that the purpose of synaptic pruning is to remove unnecessary neuronal structures from the brain; as the human brain develops, the need to understand more complex structures becomes much more pertinent, and simpler associations formed at childhood are thought to be replaced by complex structures.)
