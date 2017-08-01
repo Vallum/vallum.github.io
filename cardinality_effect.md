@@ -1,9 +1,9 @@
-Maybe I could be wrong, but I am this idea.
+Maybe I could be wrong, but I have this idea.
 
 In CVPR 2017, they chose the next paper as a best paper.
 
 Densely Connected Convolutional Networks by Gao Huang, Zhuang Liu, Laurens van der Maaten, & Kilian Q. Weinberger
-https://arxiv.org/abs/1608.06993
+[https://arxiv.org/abs/1608.06993](https://arxiv.org/abs/1608.06993)
 (Zukerbuck even proudly posted that this is from Facebook AI in his own timeline.)
 
 But, even before I read this paper, it is so accustomed to me from the very first page.
@@ -25,7 +25,7 @@ https://arxiv.org/abs/1505.04597
 Aggregated Residual Transformations for Deep Neural Networks
 Saining Xie, Ross Girshick, Piotr Dollár, Zhuowen Tu, Kaiming He
 https://arxiv.org/abs/1611.05431
-(이건 Res-Next)
+(Res-Next)
 
 Shortcut connection somethings are used for promoting cardinality effect
 like Google Inception + Inception-Resnet-V2
@@ -57,4 +57,3 @@ It is believed that the purpose of synaptic pruning is to remove unnecessary neu
 I speculate that the path of deep learning discovery follows from reducing inefficient fully connected layer to adding findings of meaningful dimmensions.
 
 I will discuss more of such issues in this blog from now on.
-Deep learning의 발전과정은 fully connected network에서 노드간 무의미한 connection 숫자는 줄이고, 의미를 가진 dimmension을 발견해나가는 과정으로 발전하고 있다고 보면 될 것 같습니다.
