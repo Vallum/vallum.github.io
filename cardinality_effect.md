@@ -33,7 +33,7 @@ at the case e.g. Google Inception + Inception-Resnet-V2
 In short, 4-depth network e.g. A-B-C-D can be added shortcuts like A-C, A-D, B-D.
 It is similar to the network which has a double-cardinality such as A-(B|C)-D.
 
-Of counse, they are differenct in the point that the later doesn't have a parallel connection of B-C,
+Of course, they are differenct in the point that the later doesn't have a parallel connection of B-C,
 and a skip connection of A-D,
 but the deficiency can be compensated by increasing the depth without difficulty.
 
