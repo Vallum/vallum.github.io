@@ -96,9 +96,49 @@ This is the summary of VggFace2 https://arxiv.org/pdf/1710.08092.pdf
   - Age template : 5 images for below 34 or above, 400 templages
   
 # Dataset Collection
-  - Detecting overlapped subjects
-  - Removing outlier images for a subject
+  
+  1. Selecting a name list
+    - an initial list of 500k from the Freebase knowledge graph, having above 100 images
+    - 100 images download using Google Image Search
+    - (human) team remove who do not have less images or a mix of people for a single name
+    - reduced to 9244
+  
+  2. Obtaining images
+    - download 1000 images for each subject
+    - append search keyword of 'sideview' and 'very young' to download 200 images for each
+    - 1400 images for each identity
   
+  3. Face detection
+    - MTCNN face detection
+    - extend bounding box by 0.3
+  
+  4. Automatic filtering by classification
+    - removing possible erroneous faces below a clssification score to remove outlier faces
+    - 1-vs-rest classifiers are trained to discriminate between the 9244 subjects
+    - top 100 images as positive
+    - top 100 of all other identities as negative for training
+    - manually checking from a random 500 subjects
+    - choose a threshold of 0.1 and remove any faces below
+  
+  5. Near duplicate removal
+    - by clustering VLAD descriptors, only retaining one images per cluster
+  
+  6. Final automatic and manual filtering
+    - Detecting overlapped subjects
+      - split each class half for training and half for testing
+      - generate a confusion matrix by calculating top-1 error on test samples
+      - removed 19 noisy classes
+      - removed 94 subjects less than 80 images
+    - Removing outlier images for a subject
+      - mixed multiple persons
+      - by the classifier score, divide the images into 3 sets (H: 1-0.95, I:0.95-0.8, L:0.8-0.5)
+      - by human, if H is noisy, cleaned all 3 sets manually
+      - if H is clean, only set L is cleaned up.
+  - Pose and age annotations
+    - template annotation
+    - train two networks
+      - for head pose, a 5-way classification ResNet-50 model is trained on CASIA-Web dataset
+      - for age, a 8-way classification ResNet-50 model is trained on IMDB-WIKI-500k+ dataset
 # Experiments Setup
 * Architecture
   - Resnet-50, SE-Resnet-50
