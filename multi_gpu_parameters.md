@@ -7,6 +7,7 @@
   - Step-down learnining rate schedule
   - L2 regularization (= weight decay)
   - extra regularization with the center loss and embedding regularization for a logit layer.
+  - evaluation set diffrent from training set, i.e. the performance measure from below is the evaludation set
   
 - Q1: I have the learned(=optimized) parameter set for single GPU, what should I do for multi gpus from this?
   - You have a strong benchmark for the multi gpus performance.
@@ -30,17 +31,27 @@
   - So reduce the weight decay (of L2 regularization) and/or raise the initail learning rate higher and/or longer.
 
 - Q4: Sometimes the performance get worse after convergence, what is happening?
-
+  - If the weight decay of L2 regularization is too strong, no further learning from entropy loss and further decay from regularization means you lose your learned information from your learned networks.
+  - If you doesn't stop your training and keep going with no learning and somewhat strong decay, you will lose all your leanred weights finally.
+  - So reduce the weight decay ratio or reduce the lenghth of your learning epochs when your learning rate is very small.
+  
 - Q5: I have extra regularization or loss function besides the cross entropy and the standard L2 regularization. What should I do?
   - Most of all, draw a chart for each loss and monitor it.
   - Sometimes they rise with L2 loss and sometimes they go down with the entropy loss.
   - But I find that usually L2 loss is the precursor of the other losses.
   - It is because that the weight decay is unconditional for the performance of networks.
   - The other loss have their own learning curve, so find the convergence pattern and make them converge.
+  - If the extra loss has regularization effect, reduce L2 decay to balance the total sum of regularization effect.
   
 - Q6: What is the effect of batch size in a multi gpus model?
   - Not because of multi gpus, but because of the increased batch size followed the multi gpus, the higher learning rate is acceptable and necessary simultaneously.
+  - Tuned L2 weight decay with single gpu is too strong for larger batch size, if you reduce your learning epoch, you should reduce the L2 decay properly. 
   - If you can find the best mix of the learning rate schedule, a proper weight decay ratio, and enough round of epochs to converge with relate to your maximum batch size which is allowed in your GPU memory limit, then all done! 
+
+- Q7: When should I increase L2 regularization weight decay ratio?
+  - It is all for check over-fitting.
+  - When the entropy loss goes down further, but simalteneusly the validation(evaludation) goes high, the weight decay ratio need to be raised.
+  -  Just like text book case.
   
 - In summary: try this
   - start with 
@@ -50,3 +61,9 @@
   - then
      - last your initail learning rate until your learning becomes unstable. Stick with it! 
      - reduce your learning rate with log scale. (divide it 1/10 or 1/8)
+  - If your learning shows early convergence,
+     - reduce the weight decay of L2 regularization.
+     - stay with higher learning rate patiently.
+  - With extra loss factors besides entropy and L2 loss,
+     - print the trend of each factor.
+     - make all of them converge.
