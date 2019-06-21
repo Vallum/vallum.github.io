@@ -14,6 +14,9 @@
   - rejection is a job of consuming too much of resources.
 - With Tensorflow dataset API
   - over-and-under sampling with tensorflow from [stackoverflow](https://stackoverflow.com/questions/47236465/oversampling-functionality-in-tensorflow-dataset-api)
+  - Tensorflow data input pipeline performance Guide
+    - Optimizaing performance : https://www.tensorflow.org/guide/performance/datasets#optimizing_performance
+    - Parallelize Data Transformation : https://www.tensorflow.org/guide/performance/datasets#parallelize_data_transformation
   - tested with Tensorflow 1.13. Tesla P40 8 GPUs, with Intel 48 CPUs and 251 GB physical memory.
 - In principle, the only bottleneck of data pipeline ought be GPUs. Let me assume that GPU time cannot be reduced.
 
@@ -78,6 +81,7 @@
   # merging all map results
   flat_map('AAAA,,CC') = 'AAAACC'
   ```
+  https://www.tensorflow.org/images/datasets_parallel_map.png
   ![https://www.tensorflow.org/images/datasets_parallel_map.png](https://www.tensorflow.org/images/datasets_parallel_map.png)
  - decoding compressed images like jpeg is a totally CPU bounded job
    - and can be parallelized in map with parallel calls and should be.
