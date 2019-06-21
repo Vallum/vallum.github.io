@@ -80,3 +80,20 @@
    - So after decode image files like JPEG, any operation which needs mem-copy should be minimized.
    
  - Not to make GPUs hang out, disk I/O, bus I/O, CPU resource should not be exausted at all times.
+ 
+ # Summary
+ - All ops
+   - file load with parallel interleave 
+   - prefetch 
+   - large shuffle 
+   - parallel map for parse_record(label) 
+   - parallel map for undersample 
+   - flat_map 
+   - prefetch 
+   - parallel map for oversample 
+   - falt_map 
+   - small shuffle 
+   - prefetch 
+   - parallel map for parse_record(image) 
+   - prefetch
+   - batch
