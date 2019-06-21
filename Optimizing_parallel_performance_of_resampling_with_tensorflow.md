@@ -2,7 +2,9 @@
 
 - When training with imbalanced (very large) data set with multi class multi labeled images
   - Learning Visual Features from Large Weakly Supervised Data - Armand Joulin, Laurens van der Maaten, Allan Jabri, Nicolas Vasilache, https://arxiv.org/abs/1511.02251
+  
   - Exploring the Limits of Weakly Supervised Pretraining - Dhruv Mahajan, Ross Girshick, Vignesh Ramanathan, Kaiming He, Manohar Paluri, Yixuan Li, Ashwin Bharambe, Laurens van der Maaten, https://arxiv.org/abs/1805.00932
+
 - Not enough with rejection sampling 
   - in case, some samples are too rare, so it normally does not exist in one batche or even in many batches.
   - rejection is a job of consuming too much of resources.
