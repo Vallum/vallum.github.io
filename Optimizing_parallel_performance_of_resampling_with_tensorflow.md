@@ -15,7 +15,7 @@
 - With Tensorflow dataset API
   - over-and-under sampling with tensorflow from [stackoverflow](https://stackoverflow.com/questions/47236465/oversampling-functionality-in-tensorflow-dataset-api)
   - Tensorflow data input pipeline performance Guide
-    - Optimizaing performance : https://www.tensorflow.org/guide/performance/datasets#optimizing_performance
+    - Optimizing performance : https://www.tensorflow.org/guide/performance/datasets#optimizing_performance
     - Parallelize Data Transformation : https://www.tensorflow.org/guide/performance/datasets#parallelize_data_transformation
   - tested with Tensorflow 1.13. Tesla P40 8 GPUs, with Intel 48 CPUs and 251 GB physical memory.
 - In principle, the only bottleneck of data pipeline ought be GPUs. Let me assume that GPU time cannot be reduced.
@@ -54,7 +54,7 @@
   - Lots of samples are dropped right after they are loaded from disks.
   - So with undersampling, disk I/O is much heavier burden compared to the ordinary sampling.
   - And because of low latency of disk I/O, it takes too long to wait to load next data records after computation.
-    - dropping can be continued undefinitely
+    - dropping-out can be continued indefinitely
   - So prefetch is necessary between file reading and record parsing.
 - The records in data files might be unshuffled.
   - So shuffle data right after they are loaded into memory
