@@ -1,15 +1,19 @@
 # Optimizing parallel performance of Under and over resampling with Tensorflow
 
 - When training with imbalanced (very large) data set with multi class multi labeled images
-  - Learning Visual Features from Large Weakly Supervised Data - Armand Joulin, Laurens van der Maaten, Allan Jabri, Nicolas Vasilache, https://arxiv.org/abs/1511.02251
+  - Learning Visual Features from Large Weakly Supervised Data 
+    - Armand Joulin, Laurens van der Maaten, Allan Jabri, Nicolas Vasilache
+    - https://arxiv.org/abs/1511.02251
   
-  - Exploring the Limits of Weakly Supervised Pretraining - Dhruv Mahajan, Ross Girshick, Vignesh Ramanathan, Kaiming He, Manohar Paluri, Yixuan Li, Ashwin Bharambe, Laurens van der Maaten, https://arxiv.org/abs/1805.00932
+  - Exploring the Limits of Weakly Supervised Pretraining 
+    - Dhruv Mahajan, Ross Girshick, Vignesh Ramanathan, Kaiming He, Manohar Paluri, Yixuan Li, Ashwin Bharambe, Laurens van der Maaten
+    - https://arxiv.org/abs/1805.00932
 
 - Not enough with rejection sampling 
   - in case, some samples are too rare, so it normally does not exist in one batche or even in many batches.
   - rejection is a job of consuming too much of resources.
 - With Tensorflow dataset API
-  - over-and-under sampling with tensorflow : [stackoverflow](https://stackoverflow.com/questions/47236465/oversampling-functionality-in-tensorflow-dataset-api)
+  - over-and-under sampling with tensorflow from [stackoverflow](https://stackoverflow.com/questions/47236465/oversampling-functionality-in-tensorflow-dataset-api)
   - tested with Tensorflow 1.13. Tesla P40 8 GPUs, with Intel 48 CPUs and 251 GB physical memory.
 - In principle, the only bottleneck of data pipeline ought be GPUs. Let me assume that GPU time cannot be reduced.
 
