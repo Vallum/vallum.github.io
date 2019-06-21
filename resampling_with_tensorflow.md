@@ -19,11 +19,11 @@
 - giving uniform probability(bet) for each record
 - under resampling with map and flat_map
   - drop some of records whose probability(bet) is lower than each label's threshold given T
-- parsing record images
-  - decode jpegs into Tensors
 - over resampling with map and flat_map
   - replicate N times some of records whose probability given T(=N.xxx) is more than integer 1 (N > 1)
 - shuffle data samples in memory (small shuffle)
+- parsing record images
+  - decode jpegs into Tensors
 - make batch from shuffle buffer
   
 ## Disk I/O, Memory, CPU, Bus I/O, GPU parallelism
@@ -42,11 +42,11 @@
   - it is waste of CPU resources to work with the data going to be dumped away.
   - tf.dataset.filter is not useful, because it doesn't provide parallelism.
   - map with parallel_calls is useful, but map handles the contents of record not the record itself.
-  - to handle death and births of records, flat_map is necessary.
+  - to handle duplication or elimination of records, flat_map is necessary.
   - like this
   ```
   dataset = dataset.map(undersample_filter_fn, num_parallel_calls=num_parallel_calls) 
   dataset = dataset.flat_map(lambda x : x) 
   ```
-  flat_map with the identity lambda function is just for mergning survived and empty records
-  [https://www.tensorflow.org/images/datasets_parallel_map.png]
+  flat_map with the identity lambda function is just for mergning survived (and empty) records
+  ![https://www.tensorflow.org/images/datasets_parallel_map.png](https://www.tensorflow.org/images/datasets_parallel_map.png)
