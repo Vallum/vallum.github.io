@@ -1,6 +1,6 @@
 # Under and over resampling with Tensorflow
 
-- Imbalanced (very large) data set with multi class multi labeled images
+- When training with imbalanced (very large) data set with multi class multi labeled images
   - Learning Visual Features from Large Weakly Supervised Data - Armand Joulin, Laurens van der Maaten, Allan Jabri, Nicolas Vasilache, https://arxiv.org/abs/1511.02251
   - Exploring the Limits of Weakly Supervised Pretraining - Dhruv Mahajan, Ross Girshick, Vignesh Ramanathan, Kaiming He, Manohar Paluri, Yixuan Li, Ashwin Bharambe, Laurens van der Maaten, https://arxiv.org/abs/1805.00932
 - Not enough with rejection sampling 
@@ -8,6 +8,8 @@
   - rejection is a job of consuming too much of resources.
 - With Tensorflow dataset API
   - over-and-under sampling with tensorflow : [stackoverflow](https://stackoverflow.com/questions/47236465/oversampling-functionality-in-tensorflow-dataset-api)
+  - tested with Tensorflow 1.13. Tesla P40 8 GPUs, with Intel 48 CPUs and 251 GB physical memory.
+- In principle, the only bottleneck of data pipeline ought be GPUs. Let me assume that GPU time cannot be reduced.
 
 ## Offline Preparation Flow
 - Collect sample distribution A
@@ -15,10 +17,12 @@
 - Design resampled(target) distribution B
   - considered for the balance of 
 - Make a transformation (vector) T from A to B
-- each column is (re)sampling probability from items in A
+- Each column is (re)sampling probability from samples in A to make samples in B
 - If colume value p in T is less than 1, some of samples 100 * (1 - p) % are goint to be dropped.
-- If columen value p is more than 1, samples are replicated p times. 
-- let's call p as a ratio factor
+  - p is a survival probability. i.e. (1-p) is a drop probability.
+- If columen value p is more than 1, samples are replicated p times.
+  - p is a replication ratio.
+- Let's call p as a ratio factor
 
 ## Online Training Flow
 - Loading tfrecords
@@ -32,26 +36,27 @@
 - shuffle data samples in memory (small shuffle)
 - parsing record images
   - decode jpegs into Tensors
-- make batch from shuffle buffer
+- make batch from parsed records
+  - prefetch before and after (parsing)map-and-batch.
 - train with batches
   
 ## Disk I/O, Memory, CPU, Bus I/O, GPU parallelism
 - Because of under sampling, resampling wastes much of disk I/O. 
   - Lots of samples are dropped right after they are loaded from disks.
-  - So with undersampling, disk I/O is a much heavier burden compared to the ordidary sampling.
-  - And because of low latency of disk I/O, it is too long to wait to load after computation.
-    - dropping can be continued very long time undefinitely
+  - So with undersampling, disk I/O is much heavier burden compared to the ordidary sampling.
+  - And because of low latency of disk I/O, it takes too long to wait to load next data records after computation.
+    - dropping can be continued undefinitely
   - So prefetch is necessary between file reading and record parsing.
 - The records in data files might be unshuffled.
   - So shuffle data right after they are loaded to memory
 - Record parsing is CPU's job.
-  - When having multi CPUs, map with parallel_calls is useful for concurrent parsing.
+  - Having multi CPUs, map with parallel_calls is useful for concurrent parsing.
 - Undersampling before oversampling
   - undersampling is dumping away some of records.
   - it reduces the size of list of data sequences.
   - it is waste of CPU resources to work with the data (in short time after) going to be dropped out.
   - tf.dataset.filter is not useful, because it doesn't provide parallelism.
-  - map with parallel_calls is useful, but map handles the internal contents of records, not the records set itself.
+  - map with parallel_calls is useful, but map handles the internal contents of records, not the record  set itself.
   - to handle duplication or elimination of records, flat_map is necessary.
   - like this
   ```
@@ -70,5 +75,8 @@
   ![https://www.tensorflow.org/images/datasets_parallel_map.png](https://www.tensorflow.org/images/datasets_parallel_map.png)
  - decoding compressed images like jpeg is a totally CPU bounded job
    - and can be parallelized in map with parallel calls and should be.
- - decoded image tensors 
+ - (Shuffle) buffer(list) of decoded image tensors occupy very large bulk of memory.
+   - Transmitting of image tensors causes huge bus I/O, because of memory copy.
+   - So after decode image files like JPEG, any operation which needs mem-copy should be minimized.
    
+ - Not to make GPUs hang out, disk I/O, bus I/O, CPU resource should not be exausted at all times.
