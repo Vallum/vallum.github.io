@@ -24,7 +24,7 @@
 - Collect sample distribution A
   - crawled and/or tagged data with not too much considering of the balance between class labels  
 - Design resampled(target) distribution B
-  - considered for the balance of 
+  - considered for the class balance of labels 
 - Make a transformation (vector) T from A to B
 - Each column is (re)sampling probability from samples in A to make samples in B
 - If colume value p in T is less than 1, some of samples 100 * (1 - p) % are goint to be dropped.
@@ -57,15 +57,15 @@
     - dropping can be continued undefinitely
   - So prefetch is necessary between file reading and record parsing.
 - The records in data files might be unshuffled.
-  - So shuffle data right after they are loaded to memory
+  - So shuffle data right after they are loaded into memory
 - Record parsing is CPU's job.
   - Having multi CPUs, map with parallel_calls is useful for concurrent parsing.
 - Undersampling before oversampling
-  - undersampling is dumping away some of records.
+  - undersampling dumps away some of records.
   - it reduces the size of list of data sequences.
   - it is waste of CPU resources to work with the data (in short time after) going to be dropped out.
   - tf.dataset.filter is not useful, because it doesn't provide parallelism.
-  - map with parallel_calls is useful, but map handles the internal contents of records, not the record  set itself.
+  - map with parallel_calls is useful, but map handles the internal contents of records, not the record set itself.
   - to handle duplication or elimination of records, flat_map is necessary.
   - like this
   ```
@@ -86,7 +86,7 @@
  - decoding compressed images like jpeg is a totally CPU bound job
    - and can be parallelized in map with parallel calls and should be.
  - (Shuffle) buffer(list) of decoded image tensors occupy very large bulk of memory.
-   - Transmitting of image tensors causes huge bus I/O, because of memory copy.
+   - Transmitting of image tensors causes huge bus I/O, because of memory copying.
    - So after decode image files like JPEG, any operation which needs mem-copy should be minimized.
    
  - Not to make GPUs hang out, disk I/O, bus I/O, CPU resource should not be exausted at all times.
