@@ -2,4 +2,4 @@
 
 [Attention! Attention!](attention.md)
 
-[Optimizing parallel performance of Under and over resampling with Tensorflow](Optimizing_parallel_performance_of_resampling_with_tensorflow.md)
+[Optimizing parallel performance of under and over resampling with Tensorflow](Optimizing_parallel_performance_of_resampling_with_tensorflow.md)
