@@ -83,7 +83,7 @@
   ```
   https://www.tensorflow.org/images/datasets_parallel_map.png
   ![https://www.tensorflow.org/images/datasets_parallel_map.png](https://www.tensorflow.org/images/datasets_parallel_map.png)
- - decoding compressed images like jpeg is a totally CPU bounded job
+ - decoding compressed images like jpeg is a totally CPU bound job
    - and can be parallelized in map with parallel calls and should be.
  - (Shuffle) buffer(list) of decoded image tensors occupy very large bulk of memory.
    - Transmitting of image tensors causes huge bus I/O, because of memory copy.
