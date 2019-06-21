@@ -92,7 +92,7 @@
  - Not to make GPUs hang out, disk I/O, bus I/O, CPU resource should not be exausted at all times.
  
  # Summary
- - All ops
+ - All ops in order
    - file load with parallel interleave 
    - prefetch 
    - large shuffle 
