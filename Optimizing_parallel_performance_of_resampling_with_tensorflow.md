@@ -10,7 +10,7 @@
     - https://arxiv.org/abs/1805.00932
 
 - Not enough with rejection sampling 
-  - in case, some samples are too rare, so it normally does not exist in one batche or even in many batches.
+  - in case, some samples are too rare, so it normally does not exist in one batch or even in many batches.
   - rejection is a job of consuming too much of resources.
 - With Tensorflow dataset API
   - over-and-under sampling with tensorflow from [stackoverflow](https://stackoverflow.com/questions/47236465/oversampling-functionality-in-tensorflow-dataset-api)
