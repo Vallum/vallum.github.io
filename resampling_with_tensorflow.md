@@ -48,5 +48,13 @@
   dataset = dataset.map(undersample_filter_fn, num_parallel_calls=num_parallel_calls) 
   dataset = dataset.flat_map(lambda x : x) 
   ```
-  flat_map with the identity lambda function is just for mergning survived (and empty) records
+  flat_map with the identity lambda function is just for merging survived (and empty) records
+  ```
+  #parallel calls of map('A'), map('B'), and map('C')
+  map('A') = 'AAAAA'
+  map('B') = ''
+  map('C') = 'CC'
+  # merging all map results
+  flat_map('AAAA,,CC') = 'AAAACC'
+  ```
   ![https://www.tensorflow.org/images/datasets_parallel_map.png](https://www.tensorflow.org/images/datasets_parallel_map.png)
