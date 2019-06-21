@@ -1,4 +1,4 @@
-# Optimizing parallel performance of Under and over resampling with Tensorflow
+# Optimizing parallel performance of under and over resampling with Tensorflow
 
 - When training with imbalanced (very large) data set with multi class multi labeled images
   - Learning Visual Features from Large Weakly Supervised Data 
