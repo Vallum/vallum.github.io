@@ -52,7 +52,7 @@
 ## Disk I/O, Memory, CPUs, Bus I/O, and GPUs parallelism
 - Because of under sampling, resampling wastes much of disk I/O. 
   - Lots of samples are dropped right after they are loaded from disks.
-  - So with undersampling, disk I/O is much heavier burden compared to the ordidary sampling.
+  - So with undersampling, disk I/O is much heavier burden compared to the ordinary sampling.
   - And because of low latency of disk I/O, it takes too long to wait to load next data records after computation.
     - dropping can be continued undefinitely
   - So prefetch is necessary between file reading and record parsing.
