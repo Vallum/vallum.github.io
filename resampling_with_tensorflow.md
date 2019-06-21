@@ -60,9 +60,9 @@
   flat_map with the identity lambda function is just for merging survived (and empty) records
   ```
   #parallel calls of map('A'), map('B'), and map('C')
-  map('A') = 'AAAAA'
-  map('B') = ''
-  map('C') = 'CC'
+  map('A') = 'AAAAA' # replication of A 5 times
+  map('B') = ''      # B is dropped
+  map('C') = 'CC'    # replication of C twice
   # merging all map results
   flat_map('AAAA,,CC') = 'AAAACC'
   ```
