@@ -49,7 +49,7 @@
   - prefetch before and after (parsing)map-and-batch.
 - train with batches
   
-## Disk I/O, Memory, CPU, Bus I/O, GPU parallelism
+## Disk I/O, Memory, CPUs, Bus I/O, and GPUs parallelism
 - Because of under sampling, resampling wastes much of disk I/O. 
   - Lots of samples are dropped right after they are loaded from disks.
   - So with undersampling, disk I/O is much heavier burden compared to the ordidary sampling.
