@@ -101,7 +101,7 @@
    - flat_map 
    - prefetch 
    - parallel map for oversample 
-   - falt_map 
+   - flat_map 
    - small shuffle 
    - prefetch 
    - parallel map for parse_record(image) 
