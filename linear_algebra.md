@@ -35,11 +35,11 @@
 * Matrix Analysis
   - Horn and Johnson 
   - for intemediate
-  - good explanations and coverage
+  - good explanations and coverage for computer scientists and engineers
   
 * Matrix Computaion
   - Golub and Van Loan
-  - for experienced
+  - for experienced, for computer scientists
   - good reference
   
 ## Lectures
