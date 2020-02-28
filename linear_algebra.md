@@ -32,6 +32,16 @@
   - Mathematical, fundamental, extensive to mathematics
   - for mathematics maniacs
   
+* Matrix Analysis
+  - Horn and Johnson 
+  - for intemediate
+  - good explanations and coverage
+  
+* Matrix Computaion
+  - Golub and Van Loan
+  - for experienced
+  - good reference
+  
 ## Lectures
 
 * Khan Academy, Linear Albebra
