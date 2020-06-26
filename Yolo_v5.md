@@ -59,3 +59,21 @@ class BottleneckCSP(nn.Module):
         y2 = self.cv2(x)
         return self.cv4(self.act(self.bn(torch.cat((y1, y2), dim=1))))
 ```
+
+### Bottleneck
+- path1 : input channel을 output channel의 1/2로 [1, 1] conv, bn, act 후, output channel로 [3, 3] conv, bc, act.
+- path2 : input channel 그대로 shortcut
+- path1, path2를 element-wise addition
+```
+class Bottleneck(nn.Module):
+    # Standard bottleneck
+    def __init__(self, c1, c2, shortcut=True, g=1, e=0.5):  # ch_in, ch_out, shortcut, groups, expansion
+        super(Bottleneck, self).__init__()
+        c_ = int(c2 * e)  # hidden channels
+        self.cv1 = Conv(c1, c_, 1, 1)
+        self.cv2 = Conv(c_, c2, 3, 1, g=g)
+        self.add = shortcut and c1 == c2
+
+    def forward(self, x):
+        return x + self.cv2(self.cv1(x)) if self.add else self.cv2(self.cv1(x))
+```
