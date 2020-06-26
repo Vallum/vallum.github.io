@@ -9,7 +9,11 @@ Multi class multi label semisupervised detection(classification)
 The problem of localization
 
 ## Common Visual models
-### Resnet
+### Backbone Networks
+- Resnet
+- Network In Network
+- DenseNet
+- Cross Stage Partial Network
 
 ### Attention
 #### Low level attention
@@ -33,17 +37,24 @@ The problem of localization
  - 5k minival
 ### Common constraints
  - early overfitting
- - Optimizer : SGD
+ - Optimizer : SGD vs ADAM
  - learning rate and weight decay
+
+### Feature Extracter Backbone for Object Detection
+ - Darknet 53 vs. Resnet 50
+ - Cross Strage Partial Network
  
 ### Faster RCNN
  - ROI
  - anchors and matcher
+
+### You Look Only Once
+ - one stage detector 
  
 ### RetinaNet
  - feature pyramid network
  - focal loss
- 
+
 ### Objets as a point
  - keypoints 2-dimensional gaussian
  - box regression
@@ -52,6 +63,9 @@ The problem of localization
  - 2d transformer
  - positional encoding
  - GIOU loss
+
+### YOLO Plus
+ - Yolo v3, v4, v5
  
 ## Unsupervised Visual Recognition 
  
