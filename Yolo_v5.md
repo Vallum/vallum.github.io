@@ -77,3 +77,69 @@ class Bottleneck(nn.Module):
     def forward(self, x):
         return x + self.cv2(self.cv1(x)) if self.add else self.cv2(self.cv1(x))
 ```
+
+### Conv
+```
+class Conv(nn.Module):
+    # Standard convolution
+    def __init__(self, c1, c2, k=1, s=1, g=1, act=True):  # ch_in, ch_out, kernel, stride, groups
+        super(Conv, self).__init__()
+        p = k // 2 if isinstance(k, int) else [x // 2 for x in k]  # padding
+        self.conv = nn.Conv2d(c1, c2, k, s, p, groups=g, bias=False)
+        self.bn = nn.BatchNorm2d(c2)
+        self.act = nn.LeakyReLU(0.1, inplace=True) if act else nn.Identity()
+
+    def forward(self, x):
+        return self.act(self.bn(self.conv(x)))
+
+    def fuseforward(self, x):
+        return self.act(self.conv(x))
+```        
+### Anchors
+```
+  - [116,90, 156,198, 373,326]  # P5/32
+  - [30,61, 62,45, 59,119]  # P4/16
+  - [10,13, 16,30, 33,23]  # P3/8
+```
+
+### Backbone
+- Large
+```
+  # [from, number, module, args]
+  [[-1, 1, Focus, [64, 3]],  # 0-P1/2
+   [-1, 1, Conv, [128, 3, 2]],  # 1-P2/4
+   [-1, 3, BottleneckCSP, [128]],
+   [-1, 1, Conv, [256, 3, 2]],  # 3-P3/8
+   [-1, 9, BottleneckCSP, [256]],
+   [-1, 1, Conv, [512, 3, 2]],  # 5-P4/16
+   [-1, 9, BottleneckCSP, [512]],
+   [-1, 1, Conv, [1024, 3, 2]], # 7-P5/32
+   [-1, 1, SPP, [1024, [5, 9, 13]]],
+  ]
+```
+
+### Yolo v5 head
+- 1/32 Large head
+  - 1024 channels from Backbone SPP
+  - 3 times Bottleneck CSP (1024 channels)
+  - Conv [1, 1] 512 channels
+   - (L-1) nearest upsample to 1/16 Mid head to (M-1)
+  - (L-2) Concat with 512 channels from 1/16 Mid head from (M-4) (1024 channels)
+  - 3 times Bottlneck CSP (1024 channels)
+  - conv2d to 85 outputs (80 classes + 4 box points + 1 objectness)
+- 1/16 Mid head
+  - 512 channels from 1/16 BCSP
+  - (M-1) Concat with 512 channels from 1/32 Large head(L-1) (1024 channels)
+  - 3 times Bottleneck CSP ( 512 channels)
+  - Conv [1, 1] 256 channels
+   - (M-2) nearest upsample to 1/8 Small head (S-1)
+  - (M-3) Concat with 256 channels from 1/8 Mid head (S-2)  (256 channels)
+  - 3 times Bottleneck CSP ( 512 channels)
+   - (M-4) Conv [512, 3, 2] to 1/32 Large head
+  - conv2d to 85 outputs (80 classes + 4 box points + 1 objectness)
+- 1/8 Small head
+  - 256 channels from 1/8 BCSP
+  - (S-1) Concat with 256 channels from 1/16 Large head (512 channels)
+  - 3 times Bottleneck CSP ( 256 channels)
+   - (S-2) Conv [256, 3, 2] to 1/16 Mid head
+  - conv2d to 85 outputs (80 classes + 4 box points + 1 objectness) 
