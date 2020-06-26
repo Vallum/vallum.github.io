@@ -1,3 +1,18 @@
+# Anatomy of YOLO v5
+## Repository URL
+https://github.com/ultralytics/yolov5/
+
+## COCO Performance
+<img src="https://user-images.githubusercontent.com/26833433/85340570-30360a80-b49b-11ea-87cf-bdf33d53ae15.png">
+
+| Model | AP<sup>val</sup> | AP<sup>test</sup> | AP<sub>50</sub> | Speed<sub>GPU</sub> | FPS<sub>GPU</sub> || params | FLOPS |
+|---------- |------ |------ |------ | -------- | ------| ------ |------  |  :------: |
+| [YOLOv5s](https://drive.google.com/open?id=1Drs_Aiu7xx6S-ix95f9kNsA6ueKRpN2J)    | 36.6     | 36.6     | 55.8     | **2.1ms** | **476** || 7.5M   | 13.2B
+| [YOLOv5m](https://drive.google.com/open?id=1Drs_Aiu7xx6S-ix95f9kNsA6ueKRpN2J)    | 43.4     | 43.4     | 62.4     | 3.0ms     | 333     || 21.8M  | 39.4B
+| [YOLOv5l](https://drive.google.com/open?id=1Drs_Aiu7xx6S-ix95f9kNsA6ueKRpN2J)    | 46.6     | 46.7     | 65.4     | 3.9ms     | 256     || 47.8M  | 88.1B
+| [YOLOv5x](https://drive.google.com/open?id=1Drs_Aiu7xx6S-ix95f9kNsA6ueKRpN2J)    | **48.4** | **48.4** | **66.9** | 6.1ms     | 164     || 89.0M  | 166.4B
+| [YOLOv3-SPP](https://drive.google.com/open?id=1Drs_Aiu7xx6S-ix95f9kNsA6ueKRpN2J)  | 45.6     | 45.5     | 65.2     | 4.5ms     | 222     || 63.0M  | 118.0B
+
 ## The Main parts of YOLO version 5
 
 ## Focus module
@@ -143,3 +158,53 @@ class Conv(nn.Module):
   - 3 times Bottleneck CSP ( 256 channels)
    - (S-2) Conv [256, 3, 2] to 1/16 Mid head
   - conv2d to 85 outputs (80 classes + 4 box points + 1 objectness) 
+
+```
+head:
+  [[-1, 3, BottleneckCSP, [1024, False]],  # 9
+
+   [-1, 1, Conv, [512, 1, 1]],
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 6], 1, Concat, [1]],  # cat backbone P4
+   [-1, 3, BottleneckCSP, [512, False]],  # 13
+
+   [-1, 1, Conv, [256, 1, 1]],
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 4], 1, Concat, [1]],  # cat backbone P3
+   [-1, 3, BottleneckCSP, [256, False]],
+   [-1, 1, nn.Conv2d, [na * (nc + 5), 1, 1]],  # 18 (P3/8-small)
+
+   [-2, 1, Conv, [256, 3, 2]],
+   [[-1, 14], 1, Concat, [1]],  # cat head P4
+   [-1, 3, BottleneckCSP, [512, False]],
+   [-1, 1, nn.Conv2d, [na * (nc + 5), 1, 1]],  # 22 (P4/16-medium)
+
+   [-2, 1, Conv, [512, 3, 2]],
+   [[-1, 10], 1, Concat, [1]],  # cat head P5
+   [-1, 3, BottleneckCSP, [1024, False]],
+   [-1, 1, nn.Conv2d, [na * (nc + 5), 1, 1]],  # 26 (P5/32-large)
+
+   [[], 1, Detect, [nc, anchors]],  # Detect(P5, P4, P3)
+  ]
+```  
+
+### GIOU
+- box loss : 1.0 - GIOU
+```
+    # Intersection area
+    inter = (torch.min(b1_x2, b2_x2) - torch.max(b1_x1, b2_x1)).clamp(0) * \
+            (torch.min(b1_y2, b2_y2) - torch.max(b1_y1, b2_y1)).clamp(0)
+
+    # Union Area
+    w1, h1 = b1_x2 - b1_x1, b1_y2 - b1_y1
+    w2, h2 = b2_x2 - b2_x1, b2_y2 - b2_y1
+    union = (w1 * h1 + 1e-16) + w2 * h2 - inter
+
+    iou = inter / union  # iou
+    if GIoU or DIoU or CIoU:
+        cw = torch.max(b1_x2, b2_x2) - torch.min(b1_x1, b2_x1)  # convex (smallest enclosing box) width
+        ch = torch.max(b1_y2, b2_y2) - torch.min(b1_y1, b2_y1)  # convex height
+        if GIoU:  # Generalized IoU https://arxiv.org/pdf/1902.09630.pdf
+            c_area = cw * ch + 1e-16  # convex area
+            return iou - (c_area - union) / c_area  # GIoU
+```
