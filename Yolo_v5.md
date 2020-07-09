@@ -4,6 +4,8 @@ https://github.com/ultralytics/yolov5/
 
 ## COCO Performance
 <img src="https://user-images.githubusercontent.com/26833433/85340570-30360a80-b49b-11ea-87cf-bdf33d53ae15.png">
+<img src="https://user-images.githubusercontent.com/30591790/86998538-91741280-c1eb-11ea-86a7-98d5239df6b4.PNG">
+
 
 | Model | AP<sup>val</sup> | AP<sup>test</sup> | AP<sub>50</sub> | Speed<sub>GPU</sub> | FPS<sub>GPU</sub> || params | FLOPS |
 |---------- |------ |------ |------ | -------- | ------| ------ |------  |  :------: |
