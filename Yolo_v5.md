@@ -190,6 +190,12 @@ head:
 
 ### GIOU
 - box loss : 1.0 - GIOU
+- hyper parameters
+```
+       'giou': 0.05,  # giou loss gain
+       'cls': 0.58,  # cls loss gain
+       'obj': 1.0,  # obj loss gain (*=img_size/320 if img_size != 320)
+```
 ```
     # Intersection area
     inter = (torch.min(b1_x2, b2_x2) - torch.max(b1_x1, b2_x1)).clamp(0) * \
@@ -215,6 +221,13 @@ head:
 - Learning rate decay
  - base LR 0.01
  - cosine decay to 300 epochs
+- weight decay : 5e-4
+- SGD momentum : 0.937
+
+### Image to Float
+```
+imgs = imgs.to(device).float() / 255.0  # uint8 to float32, 0 - 255 to 0.0 - 1.0
+```
 
 ### Speed Up
  - Rectangular Training : 비슷한 aspect ratio를 가진 image들을 같은 batch에 묶어서 공통 영역만을 receptive field에 넣어서 이미지 면적을 줄인다.
@@ -270,6 +283,13 @@ head:
 
 ### Random Affine Augmentation
   - Rotation and Scale(R, 회전 및 확대, 축소), Translation(T, 수평이동), Shear(S, 기울임)
+  - hyper parameters :
+```
+       'degrees': 0.0,  # image rotation (+/- deg)
+       'translate': 0.0,  # image translation (+/- fraction)
+       'scale': 0.5,  # image scale (+/- gain)
+       'shear': 0.0}  # image shear (+/- deg)
+```
 
 ```
     # Rotation and Scale
@@ -298,6 +318,12 @@ head:
 
 ### HSV Augmentation
   - color augmentation
+  - hyper parameters :
+```
+       'hsv_h': 0.014,  # image HSV-Hue augmentation (fraction)
+       'hsv_s': 0.68,  # image HSV-Saturation augmentation (fraction)
+       'hsv_v': 0.36,  # image HSV-Value augmentation (fraction)
+```
 ```
 def augment_hsv(img, hgain=0.5, sgain=0.5, vgain=0.5):
     r = np.random.uniform(-1, 1, 3) * [hgain, sgain, vgain] + 1  # random gains
