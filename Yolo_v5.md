@@ -136,6 +136,8 @@ class Conv(nn.Module):
 ```
 
 ### Yolo v5 head description
+<img src="https://user-images.githubusercontent.com/30591790/87012652-84175200-c204-11ea-9ad4-d0b471d0ebda.jpeg">
+
 - 1/32 Large head
   - 1024 channels from Backbone SPP
   - 3 times Bottleneck CSP (1024 channels)
