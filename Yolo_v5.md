@@ -15,7 +15,7 @@ https://github.com/ultralytics/yolov5/
 
 - YOLO v5 Large Tensorboard scalars
 
-<img src="https://user-images.githubusercontent.com/30591790/86998538-91741280-c1eb-11ea-86a7-98d5239df6b4.PNG">
+<img src="https://user-images.githubusercontent.com/30591790/87405610-a50fe680-c5fa-11ea-8a12-fcd90d469b20.PNG">
 
 - Final COCO minival evaluation results of YOLO v5 Large
 
