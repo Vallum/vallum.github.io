@@ -230,6 +230,7 @@ class DETR(nn.Module):
 
 ## Input Data Prepocessing and Augmentation
 ```
+# datasets/coco.py
 def make_coco_transforms(image_set):
 
     normalize = T.Compose([
