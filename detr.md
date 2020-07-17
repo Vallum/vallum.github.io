@@ -89,6 +89,15 @@ Training time 12 days, 16:01:22
 ## Transformer Input/Output Representation and Handling
 
 ### Spatial Positional Encoding/Embedding
+- Along the 2-d axis X and Y each, allocate sine values for even indices and cosine values for odd indices.
+```
+e.g. [X, Y]
+[[sin0, sin0], [cos0.25, sin0], [sin0.5, sin0], [sin0.75, sin0], [sin1.0, sin0],
+[sin0, cos0.25], [cos0.25, cos0.25], [sin0.5, cos0.25], [sin0.75, cos0.25], [sin1.0, cos0.25],
+[sin0, sin0.5], [cos0.25, sin0.5], [sin0.5, sin0.5], [sin0.75, sin0.5], [sin1.0, sin0.5],
+[sin0, cos0.75], [cos0.25, cos0.75], [sin0.5, cos0.75], [sin0.75, cos0.75], [sin1.0, cos0.75],
+[sin0, sin1.0], [cos0.25, sin1.0], [sin0.5, sin1.0], [sin0.75, sin1.0], [sin1.0, sin1.0]]
+```
 ```
 class PositionEmbeddingSine(nn.Module):
     """
