@@ -89,6 +89,85 @@ Training time 12 days, 16:01:22
 ## Transformer Input/Output Representation and Handling
 
 ### Spatial Positional Encoding/Embedding
+```
+class PositionEmbeddingSine(nn.Module):
+    """
+    This is a more standard version of the position embedding, very similar to the one
+    used by the Attention is all you need paper, generalized to work on images.
+    """
+...
+    def forward(self, tensor_list: NestedTensor):
+        x = tensor_list.tensors
+        mask = tensor_list.mask
+        assert mask is not None
+        not_mask = ~mask
+        y_embed = not_mask.cumsum(1, dtype=torch.float32)
+        x_embed = not_mask.cumsum(2, dtype=torch.float32)
+        if self.normalize:
+            eps = 1e-6
+            y_embed = y_embed / (y_embed[:, -1:, :] + eps) * self.scale
+            x_embed = x_embed / (x_embed[:, :, -1:] + eps) * self.scale
+
+        dim_t = torch.arange(self.num_pos_feats, dtype=torch.float32, device=x.device)
+        dim_t = self.temperature ** (2 * (dim_t // 2) / self.num_pos_feats)
+
+        pos_x = x_embed[:, :, :, None] / dim_t
+        pos_y = y_embed[:, :, :, None] / dim_t
+        pos_x = torch.stack((pos_x[:, :, :, 0::2].sin(), pos_x[:, :, :, 1::2].cos()), dim=4).flatten(3)
+        pos_y = torch.stack((pos_y[:, :, :, 0::2].sin(), pos_y[:, :, :, 1::2].cos()), dim=4).flatten(3)
+        pos = torch.cat((pos_y, pos_x), dim=3).permute(0, 3, 1, 2)
+        return pos
+```        
+- pos in
+```
+# models/detr.py
+class DETR(nn.Module):
+    """ This is the DETR module that performs object detection """
+...
+    def forward(self, samples: NestedTensor):
+...    
+        features, pos = self.backbone(samples)
+...
+
+        src, mask = features[-1].decompose()
+        assert mask is not None
+        hs = self.transformer(self.input_proj(src), mask, self.query_embed.weight, pos[-1])[0]
+```
+```
+# models/transformer.py
+class TransformerEncoderLayer(nn.Module):
+...
+    def with_pos_embed(self, tensor, pos: Optional[Tensor]):
+        return tensor if pos is None else tensor + pos
+...
+    def forward_post(self,
+                     src,
+                     src_mask: Optional[Tensor] = None,
+                     src_key_padding_mask: Optional[Tensor] = None,
+                     pos: Optional[Tensor] = None):
+        q = k = self.with_pos_embed(src, pos)
+        src2 = self.self_attn(q, k, value=src, attn_mask=src_mask,
+                              key_padding_mask=src_key_padding_mask)[0]
+```
+- pos_embed in
+```
+# models/transformer.py
+class Transformer(nn.Module):
+...
+    def forward(self, src, mask, query_embed, pos_embed):
+        # flatten NxCxHxW to HWxNxC
+        bs, c, h, w = src.shape
+        src = src.flatten(2).permute(2, 0, 1)
+        pos_embed = pos_embed.flatten(2).permute(2, 0, 1)
+        query_embed = query_embed.unsqueeze(1).repeat(1, bs, 1)
+        mask = mask.flatten(1)
+
+        tgt = torch.zeros_like(query_embed)
+        memory = self.encoder(src, src_key_padding_mask=mask, pos=pos_embed)
+        hs = self.decoder(tgt, memory, memory_key_padding_mask=mask,
+                          pos=pos_embed, query_pos=query_embed)
+        return hs.transpose(1, 2), memory.permute(1, 2, 0).view(bs, c, h, w)
+```
 
 ### Query Embedding
 - = Object Queries
