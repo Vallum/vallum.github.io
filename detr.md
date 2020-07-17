@@ -27,8 +27,41 @@ Training time 12 days, 16:01:22
 - Additionaly, to compute losses, DETR use Hungarian-matched permutation and GIOU for labels loss and boxes loss.
 - DETR also some embeddings and encodings for query and postion handling in a Transformer.
 
+## Backbone feature extractor
+- Input : scale augmented from shortest 480(to 800) to longest 1333. 3 x H x W
+- Output : 2048 x H / 32 x W / 32
+- for example : feature resultion by layers = 640-320-160-80-40-20
+- final image feature resulution is 20 x 20 (for 640 x 640 image)
+
 ## Hungarian Matcher
 
+```
+        # models/matcher.py
+        # We flatten to compute the cost matrices in a batch
+        out_prob = outputs["pred_logits"].flatten(0, 1).softmax(-1)  # [batch_size * num_queries, num_classes]
+        out_bbox = outputs["pred_boxes"].flatten(0, 1)  # [batch_size * num_queries, 4]
+
+        # Also concat the target labels and boxes
+        tgt_ids = torch.cat([v["labels"] for v in targets])
+        tgt_bbox = torch.cat([v["boxes"] for v in targets])
+
+        # Compute the classification cost. Contrary to the loss, we don't use the NLL,
+        # but approximate it in 1 - proba[target class].
+        # The 1 is a constant that doesn't change the matching, it can be ommitted.
+        cost_class = -out_prob[:, tgt_ids]
+
+        # Compute the L1 cost between boxes
+        cost_bbox = torch.cdist(out_bbox, tgt_bbox, p=1)
+
+        # Compute the giou cost betwen boxes
+        cost_giou = -generalized_box_iou(box_cxcywh_to_xyxy(out_bbox), box_cxcywh_to_xyxy(tgt_bbox))
+# Final cost matrix
+        C = self.cost_bbox * cost_bbox + self.cost_class * cost_class + self.cost_giou * cost_giou
+        C = C.view(bs, num_queries, -1).cpu()
+
+        sizes = [len(v["boxes"]) for v in targets]
+        indices = [linear_sum_assignment(c[i]) for i, c in enumerate(C.split(sizes, -1))]
+```
 ## Transformer
 
 ## Transformer Input/Output Representation and Handling
@@ -37,8 +70,14 @@ Training time 12 days, 16:01:22
 
 ### Query Embedding
 
-## Backbone
-
 ## GIOU
 
+## Input Data Prepocessing
+### Scale Augmentation
+
 ## Comparison to the single step object detectors
+- no feature pyramid
+- no SPP
+- Resnet 50 basic
+- no key points
+
