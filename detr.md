@@ -215,20 +215,20 @@ class Transformer(nn.Module):
 ### Query Embedding
 - = Object Queries
 - = Output Positional Encoding
-- query_pos in
-```
-# models/transformer.py
-class TransformerDecoder(nn.Module):
-....
-    def forward(self, tgt, memory,
-                tgt_mask: Optional[Tensor] = None,
-                memory_mask: Optional[Tensor] = None,
-                tgt_key_padding_mask: Optional[Tensor] = None,
-                memory_key_padding_mask: Optional[Tensor] = None,
-                pos: Optional[Tensor] = None,
-                query_pos: Optional[Tensor] = None):
-```
 - query_embed in 
+```
+# models/detr.py
+class DETR(nn.Module):
+    """ This is the DETR module that performs object detection """
+    def __init__(self, backbone, transformer, num_classes, num_queries, aux_loss=False):
+    ...
+            self.query_embed = nn.Embedding(num_queries, hidden_dim)
+    ...
+    def forward(self, samples: NestedTensor):
+    ...
+    hs = self.transformer(self.input_proj(src), mask, self.query_embed.weight, pos[-1])[0]
+    ...    
+```
 ```
 # models/transformer.py
 class Transformer(nn.Module):
@@ -247,19 +247,21 @@ class Transformer(nn.Module):
                           pos=pos_embed, query_pos=query_embed)
         return hs.transpose(1, 2), memory.permute(1, 2, 0).view(bs, c, h, w)
 ```
+- query_pos in
+
 ```
-# models/detr.py
-class DETR(nn.Module):
-    """ This is the DETR module that performs object detection """
-    def __init__(self, backbone, transformer, num_classes, num_queries, aux_loss=False):
-    ...
-            self.query_embed = nn.Embedding(num_queries, hidden_dim)
-    ...
-    def forward(self, samples: NestedTensor):
-    ...
-    hs = self.transformer(self.input_proj(src), mask, self.query_embed.weight, pos[-1])[0]
-    ...    
+# models/transformer.py
+class TransformerDecoder(nn.Module):
+....
+    def forward(self, tgt, memory,
+                tgt_mask: Optional[Tensor] = None,
+                memory_mask: Optional[Tensor] = None,
+                tgt_key_padding_mask: Optional[Tensor] = None,
+                memory_key_padding_mask: Optional[Tensor] = None,
+                pos: Optional[Tensor] = None,
+                query_pos: Optional[Tensor] = None):
 ```
+
 ## GIOU
 ```
 # util/box_ops.py
