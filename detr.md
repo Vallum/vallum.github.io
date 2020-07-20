@@ -36,7 +36,7 @@ Training time 12 days, 16:01:22
 "The way DETR achieves this is by improving AP_L (+7.8), however note that the
 model is still lagging behind in APs (-5.5). DETR-DC5 with the same number
 of parameters and similar FLOP count has higher AP, but is still significantly
-behind in APs too." (from paper section "4.1 Comparison with Faster R-CNN")
+behind in APs too." (from the paper section "4.1 Comparison with Faster R-CNN")
 ```
 
 ## Hungarian Matcher
@@ -102,7 +102,15 @@ def generalized_box_iou(boxes1, boxes2):
 - num_encoder_layers : 6
 - num_decoder_layers : 6
 - dim_feedforward : 2048
+<img src="https://user-images.githubusercontent.com/30591790/87923609-b9e7f080-cab8-11ea-932f-09187f314d7f.PNG">
 
+```
+"the decoder receives queries (initially set to zero),
+output positional encoding (object queries), and encoder memory, and produces
+the final set of predicted class labels and bounding boxes through multiple multihead self-attention and decoder-encoder attention."
+(from the paper section "A.3 Detailed architecture")
+
+```
 ```
 # models/transformer.py
     def forward(self, src, mask, query_embed, pos_embed):
