@@ -126,8 +126,39 @@ the final set of predicted class labels and bounding boxes through multiple mult
         hs = self.decoder(tgt, memory, memory_key_padding_mask=mask,
                           pos=pos_embed, query_pos=query_embed)
         return hs.transpose(1, 2), memory.permute(1, 2, 0).view(bs, c, h, w)
-```        
+``` 
+### Transformer Encoder
+ - key, query : combined the image feature sources with postition embedding
+ - value : source (=image features)
+```
+class TransformerEncoderLayer(nn.Module):
 
+    def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1,
+                 activation="relu", normalize_before=False):
+        super().__init__()
+        self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
+        ...
+    def with_pos_embed(self, tensor, pos: Optional[Tensor]):
+        return tensor if pos is None else tensor + pos
+    def forward_post(self,
+                     src,
+                     src_mask: Optional[Tensor] = None,
+                     src_key_padding_mask: Optional[Tensor] = None,
+                     pos: Optional[Tensor] = None):
+        q = k = self.with_pos_embed(src, pos)
+        src2 = self.self_attn(q, k, value=src, attn_mask=src_mask,
+                              key_padding_mask=src_key_padding_mask)[0]
+        src = src + self.dropout1(src2)
+        src = self.norm1(src)
+        src2 = self.linear2(self.dropout(self.activation(self.linear1(src))))
+        src = src + self.dropout2(src2)
+        src = self.norm2(src)
+        return src
+```        
+### Transformer Decoder
+#### Multi-head self-attention
+- key, query : combined the targets with query postition embedding
+- value : target (= last layer output.initially set to zero)
 ## Transformer Input/Output Representation and Handling
 
 ### Spatial Positional Encoding/Embedding
