@@ -68,6 +68,34 @@ behind in APs too." (from paper section "4.1 Comparison with Faster R-CNN")
         sizes = [len(v["boxes"]) for v in targets]
         indices = [linear_sum_assignment(c[i]) for i, c in enumerate(C.split(sizes, -1))]
 ```
+- All costs are computed pairwise beteen predictions and groundtruth targets.
+- e.g. N is the number of predctions. M is the number of targets.
+- Then All costs matrix C is a [N, M] pairwise matrix.
+- The Hungarian Algotithm computes the optimal cost and permutation over the pairwise matrix C.
+```
+def generalized_box_iou(boxes1, boxes2):
+    """
+    Generalized IoU from https://giou.stanford.edu/
+
+    The boxes should be in [x0, y0, x1, y1] format
+
+    Returns a [N, M] pairwise matrix, where N = len(boxes1)
+    and M = len(boxes2)
+    """
+    # degenerate boxes gives inf / nan results
+    # so do an early check
+    assert (boxes1[:, 2:] >= boxes1[:, :2]).all()
+    assert (boxes2[:, 2:] >= boxes2[:, :2]).all()
+    iou, union = box_iou(boxes1, boxes2)
+
+    lt = torch.min(boxes1[:, None, :2], boxes2[:, :2])
+    rb = torch.max(boxes1[:, None, 2:], boxes2[:, 2:])
+
+    wh = (rb - lt).clamp(min=0)  # [N,M,2]
+    area = wh[:, :, 0] * wh[:, :, 1]
+
+    return iou - (area - union) / area
+```    
 ## Transformer
 - d_model(=hidden_dims) : 512
 - nhead : 8
