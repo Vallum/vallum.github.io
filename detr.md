@@ -33,10 +33,10 @@ Training time 12 days, 16:01:22
 - for example : feature resultion by layers = 640-320-160-80-40-20
 - final image feature resulution is 20 x 20 (for 640 x 640 image)
 ```
-The way DETR achieves this is by improving APL (+7.8), however note that the
-model is still lagging behind in APS (-5.5). DETR-DC5 with the same number
+"The way DETR achieves this is by improving AP_L (+7.8), however note that the
+model is still lagging behind in APs (-5.5). DETR-DC5 with the same number
 of parameters and similar FLOP count has higher AP, but is still significantly
-behind in APS too. (from paper section 4.1)
+behind in APs too." (from paper section "4.1 Comparison with Faster R-CNN")
 ```
 
 ## Hungarian Matcher
