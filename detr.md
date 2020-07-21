@@ -72,7 +72,26 @@ behind in APs too." (from the paper section "4.1 Comparison with Faster R-CNN")
 - e.g. N is the number of predctions. M is the number of targets.
 - Then All costs matrix C is a [N, M] pairwise matrix.
 - The Hungarian Algotithm computes the optimal cost and permutation over the pairwise matrix C.
+
+### GIOU
 ```
+# util/box_ops.py
+# modified from torchvision to also return the union
+def box_iou(boxes1, boxes2):
+    area1 = box_area(boxes1)
+    area2 = box_area(boxes2)
+
+    lt = torch.max(boxes1[:, None, :2], boxes2[:, :2])  # [N,M,2]
+    rb = torch.min(boxes1[:, None, 2:], boxes2[:, 2:])  # [N,M,2]
+
+    wh = (rb - lt).clamp(min=0)  # [N,M,2]
+    inter = wh[:, :, 0] * wh[:, :, 1]  # [N,M]
+
+    union = area1[:, None] + area2 - inter
+
+    iou = inter / union
+    return iou, union
+
 def generalized_box_iou(boxes1, boxes2):
     """
     Generalized IoU from https://giou.stanford.edu/
@@ -95,7 +114,8 @@ def generalized_box_iou(boxes1, boxes2):
     area = wh[:, :, 0] * wh[:, :, 1]
 
     return iou - (area - union) / area
-```    
+```   
+
 ## Transformer
 - d_model(=hidden_dims) : 512
 - nhead : 8
@@ -128,7 +148,7 @@ the final set of predicted class labels and bounding boxes through multiple mult
         return hs.transpose(1, 2), memory.permute(1, 2, 0).view(bs, c, h, w)
 ``` 
 ### Transformer Encoder
- - key, query : combined the image feature sources with postition embedding
+ - key, query : combined the image feature sources with spatial postition embedding
  - value : source (=image features)
 ```
 class TransformerEncoderLayer(nn.Module):
@@ -158,9 +178,13 @@ class TransformerEncoderLayer(nn.Module):
 ### Transformer Decoder
 #### Multi-head self-attention
 - key, query : combined the targets with query postition embedding
-- value : target (= last layer output.initially set to zero)
-## Transformer Input/Output Representation and Handling
+- value : target (= last layer output.Initially set to zero)
+#### Multi-head attention
+- key : memory(=encoder output) with spatial postition embedding
+- query : combined the targets(= MHSA outputs) with query postition embedding
+- value : memory(=encoder output)
 
+## Transformer Input/Output Representation and Handling
 ### Spatial Positional Encoding/Embedding
 - Along the 2-d axis X and Y each, allocate sine values for even indices and cosine values for odd indices.
 ```
@@ -301,49 +325,6 @@ class TransformerDecoder(nn.Module):
                 query_pos: Optional[Tensor] = None):
 ```
 
-## GIOU
-```
-# util/box_ops.py
-# modified from torchvision to also return the union
-def box_iou(boxes1, boxes2):
-    area1 = box_area(boxes1)
-    area2 = box_area(boxes2)
-
-    lt = torch.max(boxes1[:, None, :2], boxes2[:, :2])  # [N,M,2]
-    rb = torch.min(boxes1[:, None, 2:], boxes2[:, 2:])  # [N,M,2]
-
-    wh = (rb - lt).clamp(min=0)  # [N,M,2]
-    inter = wh[:, :, 0] * wh[:, :, 1]  # [N,M]
-
-    union = area1[:, None] + area2 - inter
-
-    iou = inter / union
-    return iou, union
-
-
-def generalized_box_iou(boxes1, boxes2):
-    """
-    Generalized IoU from https://giou.stanford.edu/
-
-    The boxes should be in [x0, y0, x1, y1] format
-
-    Returns a [N, M] pairwise matrix, where N = len(boxes1)
-    and M = len(boxes2)
-    """
-    # degenerate boxes gives inf / nan results
-    # so do an early check
-    assert (boxes1[:, 2:] >= boxes1[:, :2]).all()
-    assert (boxes2[:, 2:] >= boxes2[:, :2]).all()
-    iou, union = box_iou(boxes1, boxes2)
-
-    lt = torch.min(boxes1[:, None, :2], boxes2[:, :2])
-    rb = torch.max(boxes1[:, None, 2:], boxes2[:, 2:])
-
-    wh = (rb - lt).clamp(min=0)  # [N,M,2]
-    area = wh[:, :, 0] * wh[:, :, 1]
-
-    return iou - (area - union) / area
-```
 ## Input Data Prepocessing and Augmentation
 ```
 # datasets/coco.py
