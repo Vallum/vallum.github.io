@@ -382,6 +382,11 @@ def make_coco_transforms(image_set):
   - 45 anchors in Retinanet (9 anchors per layers * 5 layers)
 - no key points
   - center point heatmaps in CenterNet
+- no affine or mosaic augmentation
+  - vs. Yolo v5 which uses both affine and mosaic augmentation.
 - Do the object queries replace the SPP and the anchors, and MHSA and MHA replace FPN?
   - DETR has no prior like the SPP and the anchors, but it has embedding encodings.
-  - DETR has no scale-dependent features, but has the attention modules.
+  - DETR has no scale-dependent features and affine and translation augmentation, but has the attention modules.
+- 86 GFLOPS / 28 FPS
+  - 65 FPS in Yolo V4
+  - 88 GFOPS  / 50 FPS (in serial) or 256 FPS (in batch) in Yolo V5
