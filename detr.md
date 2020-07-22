@@ -363,16 +363,25 @@ def make_coco_transforms(image_set):
 
 ## Comparison to the single step object detectors
 - no Deconvolution
-  - deconv in the Retinanet, Yolo v5, Centernet, etc.
+  - deconv in the Retinanet, Yolo v5, CenterNet, etc.
 - no feature pyramid
   - FPN in the Retinanet, Yolo v5.
 - no SPP
   - SPP in Yolo v5
 - Resnet 50 basic
-  - darknet 53 in Yolo v3
+  - Darknet 53 in Yolo v3
   - CSP in Yolo v5
   - Resnet 101, Resnext in the Retinanet
-  - Hourglass in Centernet
-- no anchors  
+  - Hourglass-104 in Centernet
+  ```
+   Darknet53 is thicker than Resnet-50 in channel width, and is normally considered as more powerful and efficient than Resnet-101.
+   Cross Stage Partial Networks(CSP) is 20~30% more efficient than Resnet-50
+  ```
+- no anchors
+  - 9 anchors in Yolo v3-5
+  - 45 anchors in Retinanet (9 anchors per layers * 5 layers)
 - no key points
-
+  - center point heatmaps in CenterNet
+- Do the object queries replace the SPP and the anchors, and MHSA and MHA replace FPN?
+  - DETR has no prior like the SPP and the anchors, but it has embedding encodings.
+  - DETR has no scale-dependent features, but has the attention modules.
