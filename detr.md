@@ -183,7 +183,7 @@ class TransformerEncoderLayer(nn.Module):
 - key : memory(=encoder output) with spatial postition embedding
 - query : combined the targets(= MHSA outputs) with query postition embedding
 - value : memory(=encoder output)
-#### versus The (original) Transformer)
+#### versus The (original) Transformer
 <img src="https://user-images.githubusercontent.com/30591790/87923658-c9673980-cab8-11ea-9e20-10b7fc1269dc.PNG">
 
 - Output Embedding is a (masked) target sequence.
