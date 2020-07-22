@@ -362,8 +362,17 @@ def make_coco_transforms(image_set):
 ```
 
 ## Comparison to the single step object detectors
+- no Deconvolution
+  - deconv in the Retinanet, Yolo v5, Centernet, etc.
 - no feature pyramid
+  - FPN in the Retinanet, Yolo v5.
 - no SPP
+  - SPP in Yolo v5
 - Resnet 50 basic
+  - darknet 53 in Yolo v3
+  - CSP in Yolo v5
+  - Resnet 101, Resnext in the Retinanet
+  - Hourglass in Centernet
+- no anchors  
 - no key points
 
