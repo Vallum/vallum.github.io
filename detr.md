@@ -1,5 +1,9 @@
 # Anatomy of Detection Transformer(DETR)
 
+## Detection Transformer
+- Repository : https://github.com/facebookresearch/detr
+- Paper : https://ai.facebook.com/research/publications/end-to-end-object-detection-with-transformers
+
 ## COCO
 ```
 IoU metric: bbox
