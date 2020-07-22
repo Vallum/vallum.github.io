@@ -183,6 +183,15 @@ class TransformerEncoderLayer(nn.Module):
 - key : memory(=encoder output) with spatial postition embedding
 - query : combined the targets(= MHSA outputs) with query postition embedding
 - value : memory(=encoder output)
+#### versus The (original) Transformer)
+https://user-images.githubusercontent.com/30591790/87923658-c9673980-cab8-11ea-9e20-10b7fc1269dc.PNG
+
+- Output Embedding is a (masked) target sequence.
+  - versus the zero initial target and the object queries embedding in the DETR.
+- Output Embedding is not an input to the second MHA.
+  - versus in the DETR, it is an input to the MHA(the second attention layer) as well as to the MHSA(the first attention layer).
+- Memory(the output of the encoder and the input V and K) has no spatial positional encoding.
+  - versus in the DETR, the key(K) is combined with the spatial positional encoding.
 
 ## Transformer Input/Output Representation and Handling
 ### Spatial Positional Encoding/Embedding
