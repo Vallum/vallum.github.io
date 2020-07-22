@@ -361,7 +361,7 @@ def make_coco_transforms(image_set):
         ])
 ```
 
-## Comparison to the single step object detectors
+## Comparison to the other modern object detectors
 - no Deconvolution
   - deconv in the Retinanet, Yolo v5, CenterNet, etc.
 - no feature pyramid
