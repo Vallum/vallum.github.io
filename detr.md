@@ -184,7 +184,7 @@ class TransformerEncoderLayer(nn.Module):
 - query : combined the targets(= MHSA outputs) with query postition embedding
 - value : memory(=encoder output)
 #### versus The (original) Transformer)
-https://user-images.githubusercontent.com/30591790/87923658-c9673980-cab8-11ea-9e20-10b7fc1269dc.PNG
+<img src="https://user-images.githubusercontent.com/30591790/87923658-c9673980-cab8-11ea-9e20-10b7fc1269dc.PNG">
 
 - Output Embedding is a (masked) target sequence.
   - versus the zero initial target and the object queries embedding in the DETR.
