@@ -113,3 +113,13 @@ I mean in general just subscribe to the channel and check out their other course
 ## Deep Direct Visual Odometry
 - Deep Direct Visual Slam : https://vision.in.tum.de/research/vslam/d3vo
 - DDVO : https://arxiv.org/pdf/1912.05101.pdf
+
+## Reference Keywords
+- Visual Odemetry
+- simultaneous localization and mapping (SLAM)
+  - drift error
+- structure-from-motion (SFM)
+- Lucas-Kanade Algorithm
+- Epipolar geometry, epipolar plane, epipolar constraint
+- bundle adjustment
+- optical flow
