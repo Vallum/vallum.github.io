@@ -58,6 +58,42 @@
 - Very Basic Lie Theory, Roger Howe, vol90, pp600-623, The American Mathematical Monthly
 - Naive Lie Theory, John Stillwell, 2008, Springer
 
-## Multiple View Geometry
+## 3D Reconstruction
 
-- 
+- 소스 형태가 동영상이 되었든,
+- 근본적으로는 두 장 혹은 여러 장의 이미지에서 이미지에 담긴 3차원 정보를 복원하는 것을 목적으로 하고 있다.
+- SLAM 같은 경우가 그 일부에서 혹은 그에 바탕하여 확장되어 설정된 특정한 미션이다.
+- 요즘 같은 경우에 당연히 Deep Learning과 결합하여 효과적인 연구 결과물이 나올 것이라고 예상해볼 수 있다.
+- CVPR 2020의 Deep Direct Visual SLAM에 대한 Daniel Cremers교수의 키노트를 소개해본다.
+- https://sites.google.com/view/omnicv-cvpr2020/program/keynote-daniel-cremers
+- 그러나 기본적으로 Direct Visual Odometry를 확장하는 개념이다.
+- 관련 전공자들은 어떤 문헌 자료를 통해서 이 분야에 처음 접근하는게 좋다고 생각하는가 찾아보았다.
+- https://www.reddit.com/r/computervision/comments/ceu057/best_books_and_courses_on_visual_odometry_and_3d/
+```
+Geoe0
+I can recommand SLAM for mobile robotics: https://www.amazon.de/dp/1466621044/?coliid=I2IP24301C8HSY&colid=1N3R5MT3K6FKJ&psc=1&ref_=lv_ov_lig_dp_it Its not for aerial robots but its really good book for SLAM. For aerial specifically I would suggest the works for Cremers et al. from the TU München. There is also a Maters Thesis from one of his students about Dense VO. Its very well written. Also the research of Scaramuzza from the ETH Zürich is very good. His tutorial paper is a good starting point https://www.ifi.uzh.ch/dam/jcr:5759a719-55db-4930-8051-4cc534f812b1/VO_Part_I_Scaramuzza.pdf
+
+alkasm
+Just to tack on here for stuff from TUM, Prof Cremers has a course on Multiple View Geometry and Dr. Sturm has a course on Visual Navigation for Flying Robots, both fully on YouTube. They are both excellent resources and start without a lot of assumptions about people's background. I mean in general just subscribe to the channel and check out their other courses if you're interested.
+```
+- 우연이 아닌 것으로 보이지만, 추천된 Cremers와 Scaramuzza는 둘 다 CVPR 2020의 Keynote speaker이다.
+
+## Multiple View Geometry
+- 유튜브에 뮨헨 공과 대학의 Daniel Cremers의 Multiple View Geomery 강의가 있다. 
+- https://www.youtube.com/playlist?list=PLTBdjV_4f-EJn6udZ34tht9EVIW7lbeo4
+- 요약을 하자면, 고급(?) 선형대수의 이론에서 Rigid Body Motion에 대한 제약이 걸린 SO(3) group에 대해서만 Lie Theory를 살짝 적용한 뒤에,
+- 실제로 multiple image source에서 3D reconsruction을 하기 위해 필요한 이론을 설명한다.
+- 매우 쉽게 설명한다고 생각되지만, 사실 Singular Value Decomposition이나 Linear Transformation, Spectral Theory 등의 선형대수 지식은 알고 있다는 전제하에 설명한다.
+- 즉, Lie Theory까지 이해할 필요는 없지만 선형대수는 매우 깊고 넓게 이해하고 있어야 한다.
+- 3D vision 분야가 그렇다고 생각된다.
+- 강의 슬라이드 및 공식페이지는 https://vision.in.tum.de/teaching/online/mvg
+- Daniel Cremers 강의의 교재는
+- "An Invitation to 3D Vision", 2004, Ma, Soatto, Kosecka, Sastry
+- 그리고, 강의에서도 소개되지만, 널리 알려진 3D Vision 및 Multiple View Geometry 교재는 다음과 같은 것들이 있다.
+- "The Geometry of Multiple Images", 2001, Faugeras and Luong
+- "Multiple View Geometry", 2003, Hartly and Zisserman
+- 저자들이 보기에 교재 내용이 별로 이론적으로는 업데이트 할만한 내용은 없다고 생각하는것 같다. 나온지 오래되었다.
+- 다시 말하면 이 정도는 기본적으로 알아야 된다는 것으로 보인다.
+- 에피폴라 기하학 같은 것을 들어봤다면, 바로 여기서 설명이 된다.
+- 여러장의 이미지에서 3D 정보를 추정한다는 것은 결국 Essential Matrix에 대한 Estimation으로 요약된다.
+- https://www.researchgate.net/publication/220182618_Some_Properties_of_the_E_Matrix_in_Two-View_Motion_Estimation
