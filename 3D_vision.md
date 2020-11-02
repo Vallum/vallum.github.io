@@ -17,6 +17,7 @@
   - Learning Depth from Monocular Videos using Direct Methods, 2018, Chaoyang Wang, Jose Miguel Buenaposada, Rui Zhu, Simon Lucey
   - Deeper Depth Prediction with Fully Convolutional Residual Networks, 2016, Iro Laina, Christian Rupprecht, Vasileios Belagiannis
   - Unsupervised Learning of Depth and Ego-Motion from Video, 2017, Tinghui Zhou, Matthew Brown, Noah Snavely, David G. Lowe
+  - Semi-Supervised Deep Learning for Monocular Depth Map Prediction, 2017, Yevhen Kuznietsov, Jorg Stuckler, Bastian Leibe
 - Depth를 추정한다고 하지만, 사실은 카메라 Pose를 추정하고 카메라 위치에서의 이미지 각 픽셀까지의 상대 거리를 재구성하는 것으로 보인다.
 
 - 근본적으로 이와 같은 미션을 Visual Odometry라고 하는 것 같다.
@@ -53,6 +54,7 @@
 - A micro Lie theory for state estimation in robotics, 2018, Joan Sola, Jeremie Deray, Dinesh Atchuthan, arXiv 1812.01537
 - Lie Groups for 2D and 3D Transformations, 2017, Ethan Eade, Technical Report
 - Lie groups, Lie algebras, projective geometry and optimization for 3D Geometry, Engineering and Computer Vision, 2014, Tom Drummond, Lecture Notes
+- Lie Groups and Lie Algebras in Robotics, 2006, Jonathan Selig
 - 이상이 엔지니어를 위한 주로 2D, 3D rotation Group을 설명한 자료이고,
 - 다음은 좀 더 근본적인 설명 문헌이다. 대수 전공자가 아닌 사람을 위해 쉽게 기초를 설명한다고 했는데, 대수학에 대한 충분한 지식없이 처음 봐서는 전혀 쉽지가 않다. 그냥 기록을 위해 남겨둔다.
 - Very Basic Lie Theory, Roger Howe, vol90, pp600-623, The American Mathematical Monthly
@@ -71,10 +73,18 @@
 - https://www.reddit.com/r/computervision/comments/ceu057/best_books_and_courses_on_visual_odometry_and_3d/
 ```
 Geoe0
-I can recommand SLAM for mobile robotics: https://www.amazon.de/dp/1466621044/?coliid=I2IP24301C8HSY&colid=1N3R5MT3K6FKJ&psc=1&ref_=lv_ov_lig_dp_it Its not for aerial robots but its really good book for SLAM. For aerial specifically I would suggest the works for Cremers et al. from the TU München. There is also a Maters Thesis from one of his students about Dense VO. Its very well written. Also the research of Scaramuzza from the ETH Zürich is very good. His tutorial paper is a good starting point https://www.ifi.uzh.ch/dam/jcr:5759a719-55db-4930-8051-4cc534f812b1/VO_Part_I_Scaramuzza.pdf
+I can recommand SLAM for mobile robotics: https://www.amazon.de/dp/1466621044/?coliid=I2IP24301C8HSY&colid=1N3R5MT3K6FKJ&psc=1&ref_=lv_ov_lig_dp_it 
+Its not for aerial robots but its really good book for SLAM. 
+For aerial specifically I would suggest the works for Cremers et al. from the TU München. 
+There is also a Maters Thesis from one of his students about Dense VO. 
+Its very well written. 
+Also the research of Scaramuzza from the ETH Zürich is very good. 
+His tutorial paper is a good starting point https://www.ifi.uzh.ch/dam/jcr:5759a719-55db-4930-8051-4cc534f812b1/VO_Part_I_Scaramuzza.pdf
 
 alkasm
-Just to tack on here for stuff from TUM, Prof Cremers has a course on Multiple View Geometry and Dr. Sturm has a course on Visual Navigation for Flying Robots, both fully on YouTube. They are both excellent resources and start without a lot of assumptions about people's background. I mean in general just subscribe to the channel and check out their other courses if you're interested.
+Just to tack on here for stuff from TUM, Prof Cremers has a course on Multiple View Geometry and Dr. Sturm has a course on Visual Navigation for Flying Robots, both fully on YouTube. 
+They are both excellent resources and start without a lot of assumptions about people's background. 
+I mean in general just subscribe to the channel and check out their other courses if you're interested.
 ```
 - 우연이 아닌 것으로 보이지만, 추천된 Cremers와 Scaramuzza는 둘 다 CVPR 2020의 Keynote speaker이다.
 
@@ -83,7 +93,7 @@ Just to tack on here for stuff from TUM, Prof Cremers has a course on Multiple V
 - https://www.youtube.com/playlist?list=PLTBdjV_4f-EJn6udZ34tht9EVIW7lbeo4
 - 요약을 하자면, 고급(?) 선형대수의 이론에서 Rigid Body Motion에 대한 제약이 걸린 SO(3) group에 대해서만 Lie Theory를 살짝 적용한 뒤에,
 - 실제로 multiple image source에서 3D reconsruction을 하기 위해 필요한 이론을 설명한다.
-- 매우 쉽게 설명한다고 생각되지만, 사실 Singular Value Decomposition이나 Linear Transformation, Spectral Theory 등의 선형대수 지식은 알고 있다는 전제하에 설명한다.
+- 매우 쉽게 설명한다고 생각되지만, 사실 Singular Value Decomposition이나 Linear Transformation, Spectral Theory 등의 선형대수 지식은 매우 잘 알고 있다는 전제하에 설명한다.
 - 즉, Lie Theory까지 이해할 필요는 없지만 선형대수는 매우 깊고 넓게 이해하고 있어야 한다.
 - 3D vision 분야가 그렇다고 생각된다.
 - 강의 슬라이드 및 공식페이지는 https://vision.in.tum.de/teaching/online/mvg
@@ -97,3 +107,9 @@ Just to tack on here for stuff from TUM, Prof Cremers has a course on Multiple V
 - 에피폴라 기하학 같은 것을 들어봤다면, 바로 여기서 설명이 된다.
 - 여러장의 이미지에서 3D 정보를 추정한다는 것은 결국 Essential Matrix에 대한 Estimation으로 요약된다.
 - https://www.researchgate.net/publication/220182618_Some_Properties_of_the_E_Matrix_in_Two-View_Motion_Estimation
+- 혹은 Camera calibration 정보가 없을 경우에는 E-Matrix 대신에 F-Matrix, Fundamental Matrix라고 표현하는 것 같다.
+- On determining the fundamental matrix : analysis of different methods and experimental results, 2012, Quang-Tuan Luong, Rachid Deriche, Olivier Faugeras, Théodore Papadopoulo, hal.inria.fr
+
+## Deep Direct Visual Odometry
+- Deep Direct Visual Slam : https://vision.in.tum.de/research/vslam/d3vo
+- DDVO : https://arxiv.org/pdf/1912.05101.pdf
