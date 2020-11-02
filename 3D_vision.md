@@ -40,7 +40,7 @@
 - 간단히 말해서, 3차원 세상을 직접 행렬로 모델링하면 3-by-3이라서 9개의 파라미터에 대한 최적화가 필요하다.
 - 그런데, 카메라는 실제로는 Rigid Body Motion이라는 물리적 제약을 받는 운동만 가능하다는 점을 고려하여, 
 - Rotation과 Translation이라는 모션만 감안하여 이를 Tangent Space에서 모델링하게 되면, 파라미터는 5개로 줄어든다.
-- 그리고 Vector Space는 Tangent Space이기 때문에 선형대수의 여러 성질을 활용할 수 있게 된다.
+- 그리고 이 Tangent Space는 Linear Transformation이 적용되는 Vector Space이기 때문에 선형대수의 여러 성질을 활용할 수 있게 된다.
 - Lie Theory가 나오는 이유는,
 - 원래 카메라의 관점은 Lie Group으로 표현되는데, Rigid Body Motion의 제약을 반영하여 Lie Algebra라는 좀 더 계산이 편리한 Vector space로 변형하는 과정이 바로 Lie 이론이다.
 
