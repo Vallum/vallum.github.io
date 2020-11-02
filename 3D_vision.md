@@ -87,6 +87,7 @@ They are both excellent resources and start without a lot of assumptions about p
 I mean in general just subscribe to the channel and check out their other courses if you're interested.
 ```
 - 우연이 아닌 것으로 보이지만, 추천된 Cremers와 Scaramuzza는 둘 다 CVPR 2020의 Keynote speaker이다.
+- Scaramuzza의 설명 : https://www.ifi.uzh.ch/dam/jcr:5759a719-55db-4930-8051-4cc534f812b1/VO_Part_I_Scaramuzza.pdf
 
 ## Multiple View Geometry
 - 유튜브에 뮨헨 공과 대학의 Daniel Cremers의 Multiple View Geomery 강의가 있다. 
