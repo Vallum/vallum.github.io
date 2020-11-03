@@ -124,3 +124,4 @@ I mean in general just subscribe to the channel and check out their other course
 - Epipolar geometry, epipolar plane, epipolar constraint
 - bundle adjustment
 - optical flow
+- skew-symmetric matrix
