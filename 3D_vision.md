@@ -125,3 +125,4 @@ I mean in general just subscribe to the channel and check out their other course
 - bundle adjustment
 - optical flow
 - skew-symmetric matrix
+  - orthogonal group : https://en.wikipedia.org/wiki/Orthogonal_group#Lie_algebra
