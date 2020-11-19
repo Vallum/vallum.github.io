@@ -15,6 +15,8 @@ The problem of localization
 - DenseNet
 - Cross Stage Partial Network
 
+### Encoder-Decoder Model
+
 ### Attention
 #### Low level attention
 - Squeeze and Excitation
@@ -22,6 +24,7 @@ The problem of localization
 - multi domain joint training
 #### Self Attention
 - Non local
+- Visual Transformer
 
 ## Definition of problem space
 ### Metric learning
@@ -30,6 +33,8 @@ The problem of localization
 
 ### Graphical models
 - Graphical Convolution Networks
+
+### Manifold theory
 
 ## Object Detection
 ### COCO dataset
@@ -80,3 +85,21 @@ The problem of localization
 ## Multi class Multi label classification
   - OpenImages Dataset
   
+## 3D and Low Level Vision
+
+### Multi-view Geometry
+
+### Lie Theory for the state estimation
+
+### Epipolar Geometry
+
+### 3D Reconstruction
+
+### Visual Odometry
+
+### SLAM
+
+### manifold theory for understanding the real world
+
+### 3D vision for the visual recognition and detection
+
