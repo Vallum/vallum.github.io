@@ -36,6 +36,11 @@ The problem of localization
 
 ### Manifold theory
 
+### Model as a Graph Network
+- Covolutional Graphical Network
+
+### Matrix Decomposition and Spectral Theory
+
 ## Object Detection
 ### COCO dataset
  - 120k training images
