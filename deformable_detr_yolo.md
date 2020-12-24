@@ -16,4 +16,4 @@ Which is reasonably fast.
 
 # Target
 
--COCO box AP 60
+- COCO box AP 60
