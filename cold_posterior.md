@@ -1,9 +1,7 @@
 ## About the Cold Posterior
 
 ```
-Cold Posteriors: among all temperized posteriors the
-best posterior predictive performance on holdout data
-is achieved at temperature T < 1.
+Cold Posteriors: among all temperized posteriors the best posterior predictive performance on holdout data is achieved at temperature T < 1.
 from arXiv 2002.02405, Wenzel et al.
 ```
 
